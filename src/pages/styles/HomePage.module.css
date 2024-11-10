@@ -1,0 +1,96 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  width: 100vw;  /* Full viewport width */
+  margin: 0;     /* Remove any margins */
+  padding: 0;    /* Remove any padding */
+  overflow-x: hidden; /* Prevent horizontal scrolling */
+  background: linear-gradient(-45deg, #1a4d2e, #2d9596, #265073, #2d9596);
+  background-size: 400% 400%;
+  animation: gradient 15s ease infinite;
+}
+
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+.navbar {
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
+}
+
+.hero {
+  background-size: cover;
+  background-position: center;
+  padding: 4rem 2rem;
+  text-align: center;
+  color: white;
+}
+
+.title {
+  font-size: 3rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+.subtitle {
+  font-size: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0 1rem;
+}
+
+.heroText {
+  max-width: 48rem;
+  text-align: center;
+}
+.buttonContainer {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+.primaryButton {
+  background-color: #10B981;
+  color: black;
+  font-weight: 600;
+  padding: 1rem 2rem;
+  border-radius: 9999px;
+  transition: background-color 0.3s;
+}
+
+.primaryButton:hover {
+  background-color: #059669;
+}
+
+.secondaryButton {
+  border: 1px solid #10B981;
+  color: #10B981;
+  font-weight: 600;
+  padding: 1rem 2rem;
+  border-radius: 9999px;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.secondaryButton:hover {
+  background-color: #10B981;
+  color: black;
+}

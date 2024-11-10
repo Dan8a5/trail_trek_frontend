@@ -2,13 +2,13 @@
 export default {
   content: [
     "./index.html",
-    "./src/**/*.{js,jsx,ts,tsx}",  // This tells Tailwind where to look for classes
+    "./src/**/*.{js,jsx,ts,tsx}",
   ],
   theme: {
     extend: {},
   },
-  plugins: [require("daisyui")],  // Add DaisyUI plugin
+  plugins: [require("daisyui")],
   daisyui: {
-    themes: ["light", "dark"],    // Add themes you want to use
+    themes: ["forest"],
   }
 }

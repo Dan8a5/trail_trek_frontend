@@ -1,0 +1,11 @@
+.authContainer {
+  @apply min-h-screen bg-base-300 flex items-center justify-center p-4;
+}
+
+.authCard {
+  @apply card w-96 glass bg-base-100;
+}
+
+.title {
+  @apply text-4xl font-bold text-center text-primary;
+}
