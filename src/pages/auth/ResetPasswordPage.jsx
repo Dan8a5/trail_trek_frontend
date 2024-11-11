@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { supabase } from '../../config/supabase';
 import { useNavigate } from 'react-router-dom';
-
+import Navbar from "../../components/layout/Navbar";
 const ResetPasswordPage = () => {
   const [email, setEmail] = useState('');
   const [isLoading, setIsLoading] = useState(false);
