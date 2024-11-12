@@ -55,16 +55,14 @@ const ItinerariesPage = () => {
       
       const requestBody = {
         parkcode: parkCode,
-        start_date: startDate,  // Already in YYYY-MM-DD format
-        end_date: endDate,      // Already in YYYY-MM-DD format
+        start_date: startDate,
+        end_date: endDate,
         num_days: Math.ceil((new Date(endDate) - new Date(startDate)) / (1000 * 60 * 60 * 24)) + 1,
         fitness_level: fitnessLevel,
         preferred_activities: activities,
         visit_season: season
       };
       
-      
-
       console.log('Request body:', JSON.stringify(requestBody, null, 2));
       
       const response = await fetch('http://127.0.0.1:8000/itineraries', {
@@ -99,6 +97,49 @@ const ItinerariesPage = () => {
     }
   };
 
+  const downloadPDF = async (itineraryId) => {
+    try {
+      const token = localStorage.getItem('token');
+      
+      const response = await fetch(
+        `http://127.0.0.1:8000/itineraries/${itineraryId}/pdf`,
+        {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Accept': 'application/pdf'
+          }
+        }
+      );
+
+      if (!response.ok) {
+        const errorData = await response.text();
+        throw new Error(errorData || `HTTP error! status: ${response.status}`);
+      }
+
+      const blob = await response.blob();
+      
+      if (blob.size === 0) {
+        throw new Error('Generated PDF is empty');
+      }
+
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `itinerary_${itineraryId}.pdf`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(url);
+      
+      setError(null);
+
+    } catch (error) {
+      console.error('Download error details:', error);
+      setError(`Download failed: ${error.message}`);
+    }
+  };
+  
   return (
     <div className="min-h-screen w-full bg-black flex flex-col">
       <Navbar />
@@ -242,9 +283,15 @@ const ItinerariesPage = () => {
           {itinerary && (
             <div className="mt-8 p-6 bg-[#1a1a1a] rounded-lg text-white">
               <h2 className="text-2xl font-bold mb-4">{itinerary.title}</h2>
-              <div className="whitespace-pre-line text-gray-300">
+              <div className="whitespace-pre-line text-gray-300 mb-4">
                 {itinerary.description}
               </div>
+              <button 
+                className="w-full bg-green-500 hover:bg-green-600 text-black font-semibold py-4 rounded-full transition-colors"
+                onClick={() => downloadPDF(itinerary.id)}
+              >
+                Download PDF
+              </button>
             </div>
           )}
         </div>
