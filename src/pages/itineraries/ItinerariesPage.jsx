@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Navbar from "../../components/layout/Navbar/Navbar";
 
 const ItinerariesPage = () => {
+  const navigate = useNavigate();
   const [parks, setParks] = useState([]);
   const [parkCode, setParkCode] = useState('');
   const [tripDetails, setTripDetails] = useState('');
@@ -10,6 +12,9 @@ const ItinerariesPage = () => {
   const [loading, setLoading] = useState(false);
   const [itinerary, setItinerary] = useState(null);
   const [error, setError] = useState(null);
+  const [fitnessLevel, setFitnessLevel] = useState('moderate');
+  const [activities, setActivities] = useState(['hiking', 'photography']);
+  const [season, setSeason] = useState('summer');
 
   useEffect(() => {
     const fetchParks = async () => {
@@ -40,29 +45,25 @@ const ItinerariesPage = () => {
       return;
     }
 
-    // Calculate number of days between start and end date
-    const start = new Date(startDate);
-    const end = new Date(endDate);
-    const diffTime = Math.abs(end - start);
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1;
-
     setLoading(true);
     setError(null);
 
     try {
       const token = localStorage.getItem('token');
-      const formattedStartDate = start.toISOString().split('T')[0];
-      const formattedEndDate = end.toISOString().split('T')[0];
+      const formattedStartDate = startDate;
+      const formattedEndDate = endDate;
       
       const requestBody = {
         parkcode: parkCode,
-        start_date: formattedStartDate,
-        end_date: formattedEndDate,
-        num_days: diffDays,
-        fitness_level: "moderate",
-        preferred_activities: ["hiking", "photography"],
-        visit_season: "winter"
+        start_date: startDate,  // Already in YYYY-MM-DD format
+        end_date: endDate,      // Already in YYYY-MM-DD format
+        num_days: Math.ceil((new Date(endDate) - new Date(startDate)) / (1000 * 60 * 60 * 24)) + 1,
+        fitness_level: fitnessLevel,
+        preferred_activities: activities,
+        visit_season: season
       };
+      
+      
 
       console.log('Request body:', JSON.stringify(requestBody, null, 2));
       
@@ -79,7 +80,6 @@ const ItinerariesPage = () => {
       console.log('Response:', data);
       
       if (!response.ok) {
-        // Handle validation errors specifically
         if (response.status === 422) {
           const errorDetail = data.detail || [];
           const errorMessages = errorDetail.map(error => 
@@ -126,6 +126,69 @@ const ItinerariesPage = () => {
                 {parks.map(park => (
                   <option key={park.id} value={park.parkcode}>
                     {park.name}
+                  </option>
+                ))}
+              </select>
+              <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                </svg>
+              </div>
+            </div>
+
+            <div className="relative">
+              <select 
+                className="w-full bg-[#1a1a1a] rounded-lg p-4 text-white appearance-none focus:outline-none"
+                value={fitnessLevel}
+                onChange={(e) => setFitnessLevel(e.target.value)}
+              >
+                <option value="">Select Fitness Level</option>
+                {['easy', 'moderate', 'challenging'].map(level => (
+                  <option key={level} value={level}>
+                    {level.charAt(0).toUpperCase() + level.slice(1)}
+                  </option>
+                ))}
+              </select>
+              <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                </svg>
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-gray-400 mb-2 text-sm">Preferred Activities</label>
+              <div className="grid grid-cols-2 gap-4">
+                {['hiking', 'sightseeing', 'photography', 'wildlife viewing', 'camping', 'fishing'].map(activity => (
+                  <label key={activity} className="flex items-center space-x-2 text-white">
+                    <input
+                      type="checkbox"
+                      className="checkbox checkbox-primary bg-[#1a1a1a]"
+                      checked={activities.includes(activity)}
+                      onChange={(e) => {
+                        if (e.target.checked) {
+                          setActivities([...activities, activity]);
+                        } else {
+                          setActivities(activities.filter(a => a !== activity));
+                        }
+                      }}
+                    />
+                    <span>{activity.charAt(0).toUpperCase() + activity.slice(1)}</span>
+                  </label>
+                ))}
+              </div>
+            </div>
+
+            <div className="relative">
+              <select 
+                className="w-full bg-[#1a1a1a] rounded-lg p-4 text-white appearance-none focus:outline-none"
+                value={season}
+                onChange={(e) => setSeason(e.target.value)}
+              >
+                <option value="">Select Season</option>
+                {['spring', 'summer', 'fall', 'winter'].map(s => (
+                  <option key={s} value={s}>
+                    {s.charAt(0).toUpperCase() + s.slice(1)}
                   </option>
                 ))}
               </select>

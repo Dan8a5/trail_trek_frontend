@@ -1,8 +1,11 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Navbar from "../../components/layout/Navbar";
-import styles from '../styles/ParksPage.module.css';
+import styles from './ParksPage.module.css';
+
 
 const ParksPage = () => {
+  const navigate = useNavigate();
   const [parks, setParks] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [loading, setLoading] = useState(true);
@@ -42,8 +45,11 @@ const ParksPage = () => {
           <p className="text-xl text-white mb-8">
             Explore America's natural wonders and plan your next adventure
           </p>
-          <button className="bg-green-500 hover:bg-green-600 text-black font-semibold px-8 py-3 rounded-full transition-colors">
-            Start Exploring
+          <button 
+            onClick={() => navigate('/parks')} 
+            className="btn btn-primary btn-sm lg:btn-md"
+          >
+            Explore Parks
           </button>
         </div>
       </div>
@@ -78,7 +84,10 @@ const ParksPage = () => {
                 <p className="text-sm text-gray-500 mb-4">
                   Park Code: {park.parkcode}
                 </p>
-                <button className="w-full bg-green-500 hover:bg-green-600 text-black font-semibold py-3 rounded-full transition-colors">
+                <button 
+                  onClick={() => navigate(`/parks/${park.parkcode}`)}
+                  className="w-full bg-green-500 hover:bg-green-600 text-black font-semibold py-3 rounded-full transition-colors"
+                >
                   View Details
                 </button>
               </div>
