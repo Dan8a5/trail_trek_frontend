@@ -14,20 +14,23 @@ const LoginPage = () => {
     e.preventDefault();
     setIsLoading(true);
     setError(null);
+
     try {
+      // Authenticate user with Supabase
       const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
       if (error) throw error;
-      
-      // Store the session token
+
+      // Store the session token in localStorage
       const token = data.session.access_token;
       localStorage.setItem('token', token);
-      
+
+      // Redirect to a protected route after login
       navigate('/parks');
     } catch (error) {
-      setError(error.message);
+      setError(error.message || "Failed to log in. Please try again.");
     } finally {
       setIsLoading(false);
     }

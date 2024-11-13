@@ -1,11 +1,40 @@
 import { useNavigate } from 'react-router-dom';
 import { MapPin, Compass, Menu, X } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styles from './Navbar.module.css';
 
 const Navbar = () => {
   const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem('token'));
+
+  const handleLogout = async () => {
+    try {
+      const response = await fetch("http://127.0.0.1:8000/auth/logout", {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${localStorage.getItem('token')}`
+        }
+      });
+  
+      if (response.ok) {
+        localStorage.removeItem('token');
+        setIsAuthenticated(false);  // Update authentication state
+        navigate('/login');  // Redirect to the login page
+      } else {
+        console.error("Failed to log out");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
+  useEffect(() => {
+    // Listen for storage changes to update `isAuthenticated` in real-time
+    const handleStorageChange = () => setIsAuthenticated(!!localStorage.getItem('token'));
+    window.addEventListener("storage", handleStorageChange);
+    return () => window.removeEventListener("storage", handleStorageChange);
+  }, []);
 
   return (
     <nav className={styles.navbar}>
@@ -39,12 +68,21 @@ const Navbar = () => {
               Itineraries
             </button>
             
-            <button
-              onClick={() => navigate('/login')}
-              className={styles.loginButton}
-            >
-              Login
-            </button>
+            {isAuthenticated ? (
+              <button
+                onClick={handleLogout}
+                className={styles.loginButton}
+              >
+                Logout
+              </button>
+            ) : (
+              <button
+                onClick={() => navigate('/login')}
+                className={styles.loginButton}
+              >
+                Login
+              </button>
+            )}
           </div>
 
           {/* Mobile menu button */}
@@ -87,15 +125,27 @@ const Navbar = () => {
               Itineraries
             </button>
             
-            <button
-              onClick={() => {
-                navigate('/login');
-                setIsMenuOpen(false);
-              }}
-              className={styles.mobileLoginButton}
-            >
-              Login
-            </button>
+            {isAuthenticated ? (
+              <button
+                onClick={() => {
+                  handleLogout();
+                  setIsMenuOpen(false);
+                }}
+                className={styles.mobileLoginButton}
+              >
+                Logout
+              </button>
+            ) : (
+              <button
+                onClick={() => {
+                  navigate('/login');
+                  setIsMenuOpen(false);
+                }}
+                className={styles.mobileLoginButton}
+              >
+                Login
+              </button>
+            )}
           </div>
         </div>
       )}
