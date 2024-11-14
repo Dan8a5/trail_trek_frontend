@@ -172,7 +172,7 @@ const ItinerariesPage = () => {
 
       <div className="flex-1 flex items-center justify-center px-4 py-8">
         <div className="w-full max-w-[500px] space-y-10">
-          <h1 className="text-5xl font-bold text-white text-center mt-8">
+          <h1 className="text-5xl font-bold text-white text-center mt-10">
             Plan Your Park Adventure
           </h1>
 
@@ -207,7 +207,7 @@ const ItinerariesPage = () => {
                 <option value="">Select your fitness level</option>
                 <option value="easy">Easy</option>
                 <option value="moderate">Moderate</option>
-                <option value="challenging">Challenging</option>
+                <option value="Dificult">Difficult</option>
               </select>
             </div>
 
