@@ -67,14 +67,23 @@ const Navbar = () => {
             >
               Itineraries
             </button>
-            
+
+            {/* Add Profile Button for Authenticated Users */}
             {isAuthenticated ? (
-              <button
-                onClick={handleLogout}
-                className={styles.loginButton}
-              >
-                Logout
-              </button>
+              <>
+                <button
+                  onClick={() => navigate('/profile')}
+                  className={styles.navLink}
+                >
+                  Profile
+                </button>
+                <button
+                  onClick={handleLogout}
+                  className={styles.loginButton}
+                >
+                  Logout
+                </button>
+              </>
             ) : (
               <button
                 onClick={() => navigate('/login')}
@@ -124,17 +133,29 @@ const Navbar = () => {
             >
               Itineraries
             </button>
-            
+
+            {/* Add Profile and Logout Buttons for Authenticated Users */}
             {isAuthenticated ? (
-              <button
-                onClick={() => {
-                  handleLogout();
-                  setIsMenuOpen(false);
-                }}
-                className={styles.mobileLoginButton}
-              >
-                Logout
-              </button>
+              <>
+                <button
+                  onClick={() => {
+                    navigate('/profile');
+                    setIsMenuOpen(false);
+                  }}
+                  className={styles.mobileNavLink}
+                >
+                  Profile
+                </button>
+                <button
+                  onClick={() => {
+                    handleLogout();
+                    setIsMenuOpen(false);
+                  }}
+                  className={styles.mobileLoginButton}
+                >
+                  Logout
+                </button>
+              </>
             ) : (
               <button
                 onClick={() => {

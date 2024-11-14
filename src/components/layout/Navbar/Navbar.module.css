@@ -47,7 +47,7 @@
 
 @media (min-width: 768px) {
   .desktopNav {
-      display: flex;
+    display: flex;
   }
 }
 
@@ -68,6 +68,7 @@
   transform: scale(1.05);
 }
 
+/* Button Styles */
 .loginButton {
   background-color: #10B981;
   color: white;
@@ -84,6 +85,22 @@
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
+/* Profile Button Style */
+.profileButton {
+  background-color: #4CAF50; /* Green color for Profile */
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 9999px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.profileButton:hover {
+  background-color: #388E3C; /* Darker Green on Hover */
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
 .mobileMenuButton {
   display: flex;
   align-items: center;
@@ -91,7 +108,7 @@
 
 @media (min-width: 768px) {
   .mobileMenuButton {
-      display: none;
+    display: none;
   }
 }
 
@@ -117,7 +134,7 @@
 
 @media (min-width: 768px) {
   .mobileMenu {
-      display: none;
+    display: none;
   }
 }
 
