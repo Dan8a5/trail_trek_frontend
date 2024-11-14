@@ -26,39 +26,48 @@ const ResetPasswordPage = () => {
       setIsLoading(false);
     }
   };
-
   return (
-    <div data-theme="forest" className="min-h-screen bg-base-300 flex items-center justify-center p-4">
-      <div className="card w-full max-w-md glass bg-base-100">
-        <div className="card-body px-4 sm:px-8">
-          <h1 className="text-3xl sm:text-4xl font-bold text-center text-primary">Reset Password</h1>
-          <p className="text-lg sm:text-xl text-center text-accent mb-6 sm:mb-8">Enter your email to receive a reset link</p>
-          
+    <div className="h-screen w-screen bg-black flex flex-col">
+      <Navbar />
+      
+      <div className="flex-1 flex items-center justify-center px-4">
+        <div className="w-[400px]">
+          <h1 className="text-4xl font-bold text-white mb-4 text-center">
+            Trail Trek
+          </h1>
+          <h2 className="text-xl text-gray-400 mb-8 text-center">
+            Reset Password
+          </h2>
+
           {message && (
-            <div className={`alert ${message.includes('sent') ? 'alert-success' : 'alert-error'} mb-4`}>
-              <span>{message}</span>
+            <div className={`bg-${message.includes('sent') ? 'green' : 'red'}-500/10 border border-${message.includes('sent') ? 'green' : 'red'}-500 text-${message.includes('sent') ? 'green' : 'red'}-500 rounded-lg p-4 mb-6`}>
+              {message}
             </div>
           )}
 
-          <form onSubmit={handleReset} className="form-control gap-4">
+          <form onSubmit={handleReset} className="space-y-6">
             <input 
-              type="email"
-              placeholder="Email"
-              className="input input-bordered input-primary w-full"
+              type="email" 
+              placeholder="Email" 
+              className="w-full bg-[#121212] rounded-lg p-4 text-white focus:outline-none"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              required
+              required 
             />
+
             <button 
-              type="submit"
-              className={`btn btn-primary w-full ${isLoading ? 'loading' : ''}`}
+              type="submit" 
+              className={`w-full bg-green-500 hover:bg-green-600 text-black font-semibold py-4 rounded-full transition-colors ${
+                isLoading ? 'opacity-75 cursor-not-allowed' : ''
+              }`}
               disabled={isLoading}
             >
               {isLoading ? 'Sending...' : 'Send Reset Link'}
             </button>
+
             <button 
-              type="button"
-              className="btn btn-outline btn-accent w-full"
+              type="button" 
+              className="w-full border border-green-500 text-green-500 hover:bg-green-500 hover:text-black font-semibold py-4 rounded-full transition-colors"
               onClick={() => navigate('/login')}
             >
               Back to Login
