@@ -70,21 +70,17 @@
 
 /* Button Styles */
 .loginButton {
-  background-color: #10B981;
-  color: white;
+  background-color: #22C55E;  /* green-500 */
+  color: black;
   padding: 0.5rem 1rem;
   border-radius: 9999px;
-  font-weight: 500;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  font-weight: 600;
   transition: all 0.2s ease;
 }
 
 .loginButton:hover {
-  background-color: #059669;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  background-color: #16A34A;  /* green-600 */
 }
-
 /* Profile Button Style */
 .profileButton {
   background-color: #4CAF50; /* Green color for Profile */

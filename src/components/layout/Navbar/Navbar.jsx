@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { MapPin, Compass, Menu, X } from 'lucide-react';
+import { MapPin, Compass, Menu, X, Tent, LogIn } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import styles from './Navbar.module.css';
 
@@ -60,12 +60,12 @@ const Navbar = () => {
               <Compass className="h-4 w-4" />
               <span>Parks</span>
             </button>
-            
             <button
               onClick={() => navigate('/itineraries')}
               className={styles.navLink}
             >
-              Itineraries
+              <Tent className="h-4 w-4" />
+              <span>Itineraries</span>
             </button>
 
             {/* Add Profile Button for Authenticated Users */}
@@ -157,15 +157,26 @@ const Navbar = () => {
                 </button>
               </>
             ) : (
-              <button
-                onClick={() => {
-                  navigate('/login');
-                  setIsMenuOpen(false);
-                }}
-                className={styles.mobileLoginButton}
-              >
-                Login
-              </button>
+              <>
+                {/* Desktop login button */}
+                <button
+                  onClick={() => navigate('/login')}
+                  className={styles.loginButton}
+                >
+                  Login
+                </button>
+
+                {/* Mobile login button */}
+                <button
+                  onClick={() => {
+                    navigate('/login');
+                    setIsMenuOpen(false);
+                  }}
+                  className={styles.mobileLoginButton}
+                >
+                  Login
+                </button>
+              </>
             )}
           </div>
         </div>
@@ -173,5 +184,4 @@ const Navbar = () => {
     </nav>
   );
 };
-
 export default Navbar;

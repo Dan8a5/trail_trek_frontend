@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { supabase } from '../../config/supabase';
 import { useNavigate } from 'react-router-dom';
 import Navbar from "../../components/layout/Navbar";
+import styles from '../styles/Gradient.module.css';
+
 const ResetPasswordPage = () => {
   const [email, setEmail] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -27,7 +29,7 @@ const ResetPasswordPage = () => {
     }
   };
   return (
-    <div className="h-screen w-screen bg-black flex flex-col">
+    <div className={`h-screen w-screen flex flex-col ${styles.gradientBackground}`}>
       <Navbar />
       
       <div className="flex-1 flex items-center justify-center px-4">
