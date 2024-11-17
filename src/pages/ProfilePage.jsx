@@ -122,12 +122,13 @@ const ProfilePage = () => {
     fetchItineraries();
   }, []);
 
+  const [expandedId, setExpandedId] = useState(null);
+
   return (
     <div className={`min-h-screen w-screen flex flex-col ${styles.gradientBackground}`}>
       <Navbar />
-      
       <div className="flex-1 px-4 pt-24 pb-16 overflow-auto">
-        <div className="max-w-[800px] mx-auto">
+        <div className="max-w-[1200px] mx-auto">
           <h1 className="text-4xl font-bold text-white mb-4 text-center">
             Your Profile
           </h1>
@@ -135,74 +136,97 @@ const ProfilePage = () => {
             Saved Itineraries
           </h2>
 
-          <div className="space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {itineraries.length > 0 ? (
               itineraries.map(itinerary => (
-                <div key={itinerary.id} className="mt-8 p-6 bg-[#1a1a1a] rounded-lg text-white">
+                <div 
+                  key={itinerary.id} 
+                  className={`bg-gradient-to-br from-[#1a1a1a] via-[#2a2a2a] to-[#303030] rounded-lg p-4 text-white cursor-pointer transition-all duration-300 hover:shadow-xl border border-gray-800 ${
+                    expandedId === itinerary.id ? 'col-span-full' : ''
+                  }`}
+                  onClick={() => setExpandedId(expandedId === itinerary.id ? null : itinerary.id)}
+                >
                   {editingId === itinerary.id ? (
-                    <>
+                    <div className="space-y-4">
                       <input
                         type="text"
                         value={editedTitle}
                         onChange={(e) => setEditedTitle(e.target.value)}
-                        className="w-full bg-[#121212] rounded-lg p-4 text-white focus:outline-none mb-4"
+                        className="w-full bg-[#121212] rounded-lg p-3 text-white focus:outline-none"
                       />
                       <textarea
                         value={editedDescription}
                         onChange={(e) => setEditedDescription(e.target.value)}
-                        className="w-full bg-[#121212] rounded-lg p-4 text-white focus:outline-none mb-4"
-                        rows="4"
+                        className="w-full bg-[#121212] rounded-lg p-3 text-white focus:outline-none"
+                        rows="3"
                       />
                       <div className="flex gap-2">
                         <button
-                          className="bg-green-500 hover:bg-green-600 text-black font-semibold py-2 px-4 rounded-full"
+                          className="flex-1 bg-green-500 hover:bg-green-600 text-black font-semibold py-2 rounded-lg"
                           onClick={() => saveEdits(itinerary.id)}
                         >
                           Save
                         </button>
                         <button
-                          className="bg-gray-500 hover:bg-gray-600 text-white font-semibold py-2 px-4 rounded-full"
+                          className="flex-1 bg-gray-500 hover:bg-gray-600 text-white font-semibold py-2 rounded-lg"
                           onClick={cancelEditing}
                         >
                           Cancel
                         </button>
                       </div>
-                    </>
+                    </div>
                   ) : (
-                    <>
-                      <h2 className="text-2xl font-bold mb-4">{itinerary.title}</h2>
-                      <p className="text-gray-400 mb-4">
+                    <div className="space-y-3">
+                      <h2 className="text-lg font-bold">{itinerary.title}</h2>
+                      <p className="text-sm text-gray-400">
                         {itinerary.start_date} - {itinerary.end_date}
                       </p>
-                      <div className="whitespace-pre-line text-gray-300 mb-4">
-                        {itinerary.description}
-                      </div>
-                      <div className="grid grid-cols-3 gap-4">
+                      
+                      {expandedId === itinerary.id ? (
+                        <div className="whitespace-pre-line text-gray-300">
+                          {itinerary.description}
+                        </div>
+                      ) : (
+                        <p className="text-sm text-gray-300 line-clamp-2">
+                          {itinerary.description}
+                        </p>
+                      )}
+
+                      <div className="flex gap-2">
                         <button
-                          className="bg-yellow-500 hover:bg-yellow-600 text-black font-semibold py-3 rounded-full transition-colors"
-                          onClick={() => startEditing(itinerary)}
+                          className="flex-1 bg-yellow-500 hover:bg-yellow-600 text-black text-sm py-2 rounded-lg"
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            startEditing(itinerary)
+                          }}
                         >
                           Edit
                         </button>
                         <button
-                          className="bg-blue-500 hover:bg-blue-600 text-black font-semibold py-3 rounded-full transition-colors"
-                          onClick={() => downloadPDF(itinerary.id)}
+                          className="flex-1 bg-blue-500 hover:bg-blue-600 text-black text-sm py-2 rounded-lg"
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            downloadPDF(itinerary.id)
+                          }}
                         >
-                          Download PDF
+                          Download
                         </button>
                         <button
-                          className="bg-red-500 hover:bg-red-600 text-white font-semibold py-3 rounded-full transition-colors"
-                          onClick={() => handleDeleteItinerary(itinerary.id)}
+                          className="flex-1 bg-red-500 hover:bg-red-600 text-white text-sm py-2 rounded-lg"
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            handleDeleteItinerary(itinerary.id)
+                          }}
                         >
                           Delete
                         </button>
                       </div>
-                    </>
+                    </div>
                   )}
                 </div>
               ))
             ) : (
-              <div className="text-center text-gray-400">
+              <div className="col-span-full text-center text-gray-400">
                 No saved itineraries found.
               </div>
             )}
