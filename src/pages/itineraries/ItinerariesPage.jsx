@@ -1,94 +1,102 @@
-import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import Navbar from "../../components/layout/Navbar/Navbar";
-import styles from '../styles/Gradient.module.css';
+import styles from "../styles/Gradient.module.css";
 
 const AVAILABLE_ACTIVITIES = [
-  'hiking',
-  'photography',
-  'camping',
-  'wildlife viewing',
-  'scenic drives',
-  'stargazing',
-  'rock climbing',
-  'kayaking',
-  'fishing',
-  'backpacking',
-  'birdwatching',
-  'ranger programs',
-  'waterfalls viewing',
-  'cave tours',
-  'swimming',
-  'biking',
-  'horseback riding',
-  'winter sports',
-  'picnicking',
-  'boating'
+  "hiking",
+  "photography",
+  "camping",
+  "wildlife viewing",
+  "scenic drives",
+  "stargazing",
+  "rock climbing",
+  "kayaking",
+  "fishing",
+  "backpacking",
+  "birdwatching",
+  "ranger programs",
+  "waterfalls viewing",
+  "cave tours",
+  "swimming",
+  "biking",
+  "horseback riding",
+  "winter sports",
+  "picnicking",
+  "boating",
 ];
 
 const getCurrentSeason = (date) => {
   const month = new Date(date).getMonth();
-  if (month >= 2 && month <= 4) return 'spring';
-  if (month >= 5 && month <= 7) return 'summer';
-  if (month >= 8 && month <= 10) return 'fall';
-  return 'winter';
+  if (month >= 2 && month <= 4) return "spring";
+  if (month >= 5 && month <= 7) return "summer";
+  if (month >= 8 && month <= 10) return "fall";
+  return "winter";
 };
 
 const ItinerariesPage = () => {
   const navigate = useNavigate();
   const [parks, setParks] = useState([]);
-  const [parkCode, setParkCode] = useState('');
-  const [tripDetails, setTripDetails] = useState('');
-  const [startDate, setStartDate] = useState(new Date().toISOString().split('T')[0]);
-  const [endDate, setEndDate] = useState(new Date().toISOString().split('T')[0]);
+  const [parkCode, setParkCode] = useState("");
+  const [tripDetails, setTripDetails] = useState("");
+  const [startDate, setStartDate] = useState(
+    new Date().toISOString().split("T")[0]
+  );
+  const [endDate, setEndDate] = useState(
+    new Date().toISOString().split("T")[0]
+  );
   const [loading, setLoading] = useState(false);
   const [itinerary, setItinerary] = useState(null);
   const [error, setError] = useState(null);
   const [isActivitiesOpen, setIsActivitiesOpen] = useState(false);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [fitnessLevel, setFitnessLevel] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
+  const [fitnessLevel, setFitnessLevel] = useState("");
   const [activities, setActivities] = useState([]);
 
   const handleStartDateChange = (e) => {
     const newStartDate = e.target.value;
     setStartDate(newStartDate);
-    
+
     const startDateObj = new Date(newStartDate);
-    const endDateObj = new Date(startDateObj.getFullYear(), startDateObj.getMonth() + 1, 0);
-    const formattedEndDate = endDateObj.toISOString().split('T')[0];
+    const endDateObj = new Date(
+      startDateObj.getFullYear(),
+      startDateObj.getMonth() + 1,
+      0
+    );
+    const formattedEndDate = endDateObj.toISOString().split("T")[0];
     setEndDate(formattedEndDate);
   };
 
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (isActivitiesOpen && !event.target.closest('.activities-dropdown')) {
+      if (isActivitiesOpen && !event.target.closest(".activities-dropdown")) {
         setIsActivitiesOpen(false);
       }
     };
 
-    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [isActivitiesOpen]);
 
   useEffect(() => {
     const fetchParks = async () => {
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem("token");
       try {
-        const response = await fetch('http://127.0.0.1:8000/parks', {
+        const response = await fetch("http://127.0.0.1:8000/parks", {
           headers: {
-            'Authorization': `Bearer ${token}`
-          }
+            Authorization: `Bearer ${token}`,
+          },
         });
         if (!response.ok) {
-          throw new Error('Failed to fetch parks');
+          throw new Error("Failed to fetch parks");
         }
         const data = await response.json();
         setParks(data);
       } catch (error) {
-        console.error('Error fetching parks:', error);
-        setError('Failed to load parks. Please try again later.');
+        console.error("Error fetching parks:", error);
+        setError("Failed to load parks. Please try again later.");
       }
     };
 
@@ -97,7 +105,7 @@ const ItinerariesPage = () => {
 
   const handleGenerateItinerary = async () => {
     if (!parkCode) {
-      setError('Please select a park');
+      setError("Please select a park");
       return;
     }
 
@@ -105,25 +113,28 @@ const ItinerariesPage = () => {
     setError(null);
 
     try {
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem("token");
       const requestBody = {
         parkcode: parkCode,
         start_date: startDate,
         end_date: endDate,
-        num_days: Math.ceil((new Date(endDate) - new Date(startDate)) / (1000 * 60 * 60 * 24)) + 1,
+        num_days:
+          Math.ceil(
+            (new Date(endDate) - new Date(startDate)) / (1000 * 60 * 60 * 24)
+          ) + 1,
         fitness_level: fitnessLevel,
         preferred_activities: activities,
         visit_season: getCurrentSeason(startDate),
-        trip_details: tripDetails
+        trip_details: tripDetails,
       };
 
-      const response = await fetch('http://127.0.0.1:8000/itineraries', {
-        method: 'POST',
+      const response = await fetch("http://127.0.0.1:8000/itineraries", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify(requestBody)
+        body: JSON.stringify(requestBody),
       });
 
       const data = await response.json();
@@ -131,12 +142,12 @@ const ItinerariesPage = () => {
       if (!response.ok) {
         if (response.status === 422) {
           const errorDetail = data.detail || [];
-          const errorMessages = errorDetail.map(error => 
-            `${error.loc.join('.')} - ${error.msg}`
-          ).join('\n');
+          const errorMessages = errorDetail
+            .map((error) => `${error.loc.join(".")} - ${error.msg}`)
+            .join("\n");
           throw new Error(`Validation Error:\n${errorMessages}`);
         }
-        throw new Error(data.detail || 'Failed to generate itinerary');
+        throw new Error(data.detail || "Failed to generate itinerary");
       }
 
       setItinerary(data);
@@ -151,57 +162,60 @@ const ItinerariesPage = () => {
     if (!itinerary) return;
 
     try {
-      const token = localStorage.getItem('token');
-      const response = await fetch('http://127.0.0.1:8000/itineraries/save_new_itinerary', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify({
-          title: itinerary.title || `${parkCode} Trip`,
-          description: itinerary.description || '',
-          park_code: parkCode,
-          start_date: startDate,
-          end_date: endDate,
-          fitness_level: fitnessLevel,
-          preferred_activities: activities,
-          visit_season: getCurrentSeason(startDate),
-          trip_details: tripDetails || ''
-        })
-      });
+      const token = localStorage.getItem("token");
+      const response = await fetch(
+        "http://127.0.0.1:8000/itineraries/save_new_itinerary",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            title: itinerary.title || `${parkCode} Trip`,
+            description: itinerary.description || "",
+            park_code: parkCode,
+            start_date: startDate,
+            end_date: endDate,
+            fitness_level: fitnessLevel,
+            preferred_activities: activities,
+            visit_season: getCurrentSeason(startDate),
+            trip_details: tripDetails || "",
+          }),
+        }
+      );
 
       const data = await response.json();
 
       if (!response.ok) {
-        console.log('Server response:', data);
-        throw new Error(data.detail || 'Failed to save itinerary');
+        console.log("Server response:", data);
+        throw new Error(data.detail || "Failed to save itinerary");
       }
 
-      alert('Itinerary saved successfully to your profile!');
+      alert("Itinerary saved successfully to your profile!");
     } catch (error) {
       setError(error.message);
-      console.log('Error saving itinerary:', error);
+      console.log("Error saving itinerary:", error);
     }
   };
 
   const downloadPDF = async (itineraryId) => {
     try {
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem("token");
       const response = await fetch(
         `http://127.0.0.1:8000/itineraries/${itineraryId}/pdf`,
         {
-          method: 'GET',
+          method: "GET",
           headers: {
-            'Authorization': `Bearer ${token}`,
-            'Accept': 'application/pdf'
-          }
+            Authorization: `Bearer ${token}`,
+            Accept: "application/pdf",
+          },
         }
       );
 
       const blob = await response.blob();
       const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
+      const a = document.createElement("a");
       a.href = url;
       a.download = `itinerary_${itineraryId}.pdf`;
       document.body.appendChild(a);
@@ -213,14 +227,17 @@ const ItinerariesPage = () => {
     } catch (error) {
       setError(`Download failed: ${error.message}`);
     }
-  };return (
-    <div className={`min-h-screen w-screen flex flex-col ${styles.gradientBackground}`}>
+  };
+  return (
+    <div
+      className={`min-h-screen w-screen flex flex-col ${styles.gradientBackground}`}
+    >
       <Navbar />
       <div className="flex-1 flex items-center justify-center px-4 py-8">
         <div className="w-full max-w-[500px] space-y-10">
-        <h1 className="text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#708090] to-[#FAFAD2] text-center mt-10">
-  Plan Your Park Adventure
-</h1>
+          <h1 className="text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#708090] to-[#FAFAD2] text-center mt-10">
+            Plan Your Park Adventure
+          </h1>
 
           {error && (
             <div className="bg-red-500/10 border border-red-500 text-red-500 rounded-lg p-4 whitespace-pre-line text-sm font-normal">
@@ -230,16 +247,18 @@ const ItinerariesPage = () => {
 
           <div className="space-y-6">
             <select
-              className="w-full bg-[#1a1a1a] hover:bg-[#252525] rounded-lg p-4 text-white appearance-none focus:outline-none text-sm font-normal transition-colors"
+              className="w-full bg-[#1a1a1a] rounded-lg p-4 text-white appearance-none focus:outline-none"
               value={parkCode}
               onChange={(e) => setParkCode(e.target.value)}
             >
-              <option value="" className="text-gray-400 font-normal">Select a Park</option>
-              {parks.map(park => (
-                <option key={park.id} value={park.parkcode} className="font-normal">
-                  {park.name}
-                </option>
-              ))}
+              <option value="">Select a Park</option>
+              {parks
+                .sort((a, b) => a.name.localeCompare(b.name))
+                .map((park) => (
+                  <option key={park.id} value={park.parkcode}>
+                    {park.name}
+                  </option>
+                ))}
             </select>
 
             <select
@@ -247,10 +266,18 @@ const ItinerariesPage = () => {
               value={fitnessLevel}
               onChange={(e) => setFitnessLevel(e.target.value)}
             >
-              <option value="" className="text-gray-400 font-normal">Choose your adventure style</option>
-              <option value="easy" className="font-normal">Casual Explorer</option>
-              <option value="moderate" className="font-normal">Active Adventurer</option>
-              <option value="Difficult" className="font-normal">Peak Challenger</option>
+              <option value="" className="text-gray-400 font-normal">
+                Choose your adventure style
+              </option>
+              <option value="easy" className="font-normal">
+                Casual Explorer
+              </option>
+              <option value="moderate" className="font-normal">
+                Active Adventurer
+              </option>
+              <option value="Difficult" className="font-normal">
+                Peak Challenger
+              </option>
             </select>
 
             <div className="relative activities-dropdown">
@@ -259,18 +286,29 @@ const ItinerariesPage = () => {
                   onClick={() => setIsActivitiesOpen(!isActivitiesOpen)}
                   className="w-full bg-[#1a1a1a] hover:bg-[#252525] rounded-lg p-4 text-white focus:outline-none flex justify-between items-center text-sm font-normal transition-colors"
                 >
-                  <span className={`${activities.length === 0 ? 'text-gray-400' : 'text-white'} font-normal`}>
+                  <span
+                    className={`${
+                      activities.length === 0 ? "text-gray-400" : "text-white"
+                    } font-normal`}
+                  >
                     {activities.length === 0
-                      ? 'Select preferred activities'
+                      ? "Select preferred activities"
                       : `${activities.length} activities selected`}
                   </span>
                   <svg
-                    className={`w-5 h-5 transition-transform ${isActivitiesOpen ? 'transform rotate-180' : ''}`}
+                    className={`w-5 h-5 transition-transform ${
+                      isActivitiesOpen ? "transform rotate-180" : ""
+                    }`}
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
                   >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M19 9l-7 7-7-7"
+                    />
                   </svg>
                 </button>
 
@@ -286,36 +324,44 @@ const ItinerariesPage = () => {
                       />
                     </div>
                     <div className="max-h-60 overflow-y-auto">
-                      {AVAILABLE_ACTIVITIES
-                        .filter(activity => 
-                          activity.toLowerCase().includes(searchTerm.toLowerCase())
-                        )
-                        .map(activity => (
-                          <label
-                            key={activity}
-                            className={`flex items-center px-4 py-2 hover:bg-[#252525] cursor-pointer transition-colors ${
-                              activities.includes(activity) ? 'bg-green-500/20' : ''
-                            }`}
-                          >
-                            <input
-                              type="checkbox"
-                              className="form-checkbox h-5 w-5 text-green-500 rounded border-gray-600 focus:ring-green-500 focus:ring-offset-0"
-                              checked={activities.includes(activity)}
-                              onChange={(e) => {
-                                if (e.target.checked) {
-                                  setActivities([...activities, activity]);
-                                } else {
-                                  setActivities(activities.filter(a => a !== activity));
-                                }
-                              }}
-                            />
-                            <span className="ml-3 text-white capitalize text-sm font-normal">
-                              {activity.split('/').map(word =>
-                                word.charAt(0).toUpperCase() + word.slice(1)
-                              ).join('/')}
-                            </span>
-                          </label>
-                        ))}
+                      {AVAILABLE_ACTIVITIES.filter((activity) =>
+                        activity
+                          .toLowerCase()
+                          .includes(searchTerm.toLowerCase())
+                      ).map((activity) => (
+                        <label
+                          key={activity}
+                          className={`flex items-center px-4 py-2 hover:bg-[#252525] cursor-pointer transition-colors ${
+                            activities.includes(activity)
+                              ? "bg-green-500/20"
+                              : ""
+                          }`}
+                        >
+                          <input
+                            type="checkbox"
+                            className="form-checkbox h-5 w-5 text-green-500 rounded border-gray-600 focus:ring-green-500 focus:ring-offset-0"
+                            checked={activities.includes(activity)}
+                            onChange={(e) => {
+                              if (e.target.checked) {
+                                setActivities([...activities, activity]);
+                              } else {
+                                setActivities(
+                                  activities.filter((a) => a !== activity)
+                                );
+                              }
+                            }}
+                          />
+                          <span className="ml-3 text-white capitalize text-sm font-normal">
+                            {activity
+                              .split("/")
+                              .map(
+                                (word) =>
+                                  word.charAt(0).toUpperCase() + word.slice(1)
+                              )
+                              .join("/")}
+                          </span>
+                        </label>
+                      ))}
                     </div>
                     <div className="p-2 border-t border-gray-700">
                       <button
@@ -330,14 +376,18 @@ const ItinerariesPage = () => {
               </div>
               {activities.length > 0 && (
                 <div className="mt-2 flex flex-wrap gap-2">
-                  {activities.map(activity => (
+                  {activities.map((activity) => (
                     <span
                       key={activity}
                       className="inline-flex items-center bg-green-500/20 text-white px-3 py-1 rounded-full text-sm font-normal"
                     >
                       {activity.charAt(0).toUpperCase() + activity.slice(1)}
                       <button
-                        onClick={() => setActivities(activities.filter(a => a !== activity))}
+                        onClick={() =>
+                          setActivities(
+                            activities.filter((a) => a !== activity)
+                          )
+                        }
                         className="ml-2 hover:text-red-500 transition-colors"
                       >
                         ×
@@ -373,12 +423,14 @@ const ItinerariesPage = () => {
             />
 
             <button
-              className={`w-full ${loading ? 'bg-green-700' : 'bg-green-500 hover:bg-green-600'} 
+              className={`w-full ${
+                loading ? "bg-green-700" : "bg-green-500 hover:bg-green-600"
+              } 
                 text-black font-semibold py-4 rounded-full transition-colors text-sm`}
               onClick={handleGenerateItinerary}
               disabled={loading}
             >
-              {loading ? 'Generating...' : 'Generate Itinerary'}
+              {loading ? "Generating..." : "Generate Itinerary"}
             </button>
           </div>
 
