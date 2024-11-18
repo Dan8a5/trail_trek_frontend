@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { MapPin, Compass, Menu, X, Tent, LogIn } from 'lucide-react';
+import { MapPin, Compass, Menu, X, Tent, LogIn, Mail } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import styles from './Navbar.module.css';
 
@@ -19,8 +19,8 @@ const Navbar = () => {
   
       if (response.ok) {
         localStorage.removeItem('token');
-        setIsAuthenticated(false);  // Update authentication state
-        navigate('/login');  // Redirect to the login page
+        setIsAuthenticated(false);
+        navigate('/login');
       } else {
         console.error("Failed to log out");
       }
@@ -30,7 +30,6 @@ const Navbar = () => {
   };
 
   useEffect(() => {
-    // Listen for storage changes to update `isAuthenticated` in real-time
     const handleStorageChange = () => setIsAuthenticated(!!localStorage.getItem('token'));
     window.addEventListener("storage", handleStorageChange);
     return () => window.removeEventListener("storage", handleStorageChange);
@@ -40,7 +39,6 @@ const Navbar = () => {
     <nav className={styles.navbar}>
       <div className={styles.container}>
         <div className={styles.wrapper}>
-          {/* Logo and Brand */}
           <div className={styles.logoContainer}>
             <button 
               onClick={() => navigate('/')} 
@@ -51,7 +49,6 @@ const Navbar = () => {
             </button>
           </div>
 
-          {/* Desktop Navigation */}
           <div className={styles.desktopNav}>
             <button
               onClick={() => navigate('/parks')}
@@ -67,8 +64,14 @@ const Navbar = () => {
               <Tent className="h-4 w-4" />
               <span>Itineraries</span>
             </button>
+            <button
+              onClick={() => navigate('/contact')}
+              className={styles.navLink}
+            >
+              <Mail className="h-4 w-4" />
+              <span>Contact Us</span>
+            </button>
 
-            {/* Add Profile Button for Authenticated Users */}
             {isAuthenticated ? (
               <>
                 <button
@@ -94,7 +97,6 @@ const Navbar = () => {
             )}
           </div>
 
-          {/* Mobile menu button */}
           <div className={styles.mobileMenuButton}>
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -110,7 +112,6 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* Mobile menu */}
       {isMenuOpen && (
         <div className={styles.mobileMenu}>
           <div className={styles.mobileMenuContent}>
@@ -121,6 +122,7 @@ const Navbar = () => {
               }}
               className={styles.mobileNavLink}
             >
+              <Compass className="h-4 w-4 mr-2" />
               Parks
             </button>
             
@@ -131,10 +133,21 @@ const Navbar = () => {
               }}
               className={styles.mobileNavLink}
             >
+              <Tent className="h-4 w-4 mr-2" />
               Itineraries
             </button>
 
-            {/* Add Profile and Logout Buttons for Authenticated Users */}
+            <button
+              onClick={() => {
+                navigate('/contact');
+                setIsMenuOpen(false);
+              }}
+              className={styles.mobileNavLink}
+            >
+              <Mail className="h-4 w-4 mr-2" />
+              Contact Us
+            </button>
+
             {isAuthenticated ? (
               <>
                 <button
@@ -158,15 +171,6 @@ const Navbar = () => {
               </>
             ) : (
               <>
-                {/* Desktop login button */}
-                <button
-                  onClick={() => navigate('/login')}
-                  className={styles.loginButton}
-                >
-                  Login
-                </button>
-
-                {/* Mobile login button */}
                 <button
                   onClick={() => {
                     navigate('/login');
@@ -184,4 +188,5 @@ const Navbar = () => {
     </nav>
   );
 };
+
 export default Navbar;

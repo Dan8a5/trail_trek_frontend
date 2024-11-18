@@ -75,13 +75,13 @@ const ParksPage = () => {
       <div className={styles.hero}>
         <AnimatedBackground />
         <div className={styles.heroContent}>
-        <animated.h1 
-  style={titleAnimation}
-  className="text-4xl md:text-5xl lg:text-6xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#708090] to-[#FAFAD2] mb-6"
->
-  National Parks Directory
-</animated.h1>
-<p className="text-xl text-transparent bg-clip-text bg-gradient-to-r from-[#FAFAD2] to-[#708090] mb-8 max-w-2xl text-center">
+          <animated.h1 
+            style={titleAnimation}
+            className="text-4xl md:text-5xl lg:text-6xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#708090] to-[#FAFAD2] mb-6 drop-shadow-[0_2px_2px_rgba(0,0,0,0.8)]"
+          >
+            National Parks Directory
+          </animated.h1>
+          <p className="text-xl text-transparent bg-clip-text bg-gradient-to-r from-[#FAFAD2] to-[#708090] mb-8 max-w-2xl text-center drop-shadow-[0_2px_2px_rgba(0,0,0,0.8)]">
   Browse all 63 national parks with descriptions and official links
 </p>
           <div className="flex justify-center">
