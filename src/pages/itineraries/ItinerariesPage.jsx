@@ -218,9 +218,9 @@ const ItinerariesPage = () => {
       <Navbar />
       <div className="flex-1 flex items-center justify-center px-4 py-8">
         <div className="w-full max-w-[500px] space-y-10">
-          <h1 className="text-5xl font-bold text-white text-center mt-10">
-            Plan Your Park Adventure
-          </h1>
+        <h1 className="text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#708090] to-[#FAFAD2] text-center mt-10">
+  Plan Your Park Adventure
+</h1>
 
           {error && (
             <div className="bg-red-500/10 border border-red-500 text-red-500 rounded-lg p-4 whitespace-pre-line text-sm font-normal">

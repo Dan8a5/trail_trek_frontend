@@ -1,11 +1,12 @@
-import { useNavigate } from 'react-router-dom';
-import { ArrowRight, Compass, Map } from 'lucide-react';
+import { useNavigate } from "react-router-dom";
+import { ArrowRight, Compass, Map } from "lucide-react";
 import Navbar from "../components/layout/Navbar";
-import styles from './styles/HomePage.module.css';
+import Footer from "../components/layout/Footer/Footer";
+import styles from "./styles/HomePage.module.css";
 
 const HomePage = () => {
   const navigate = useNavigate();
-  
+
   return (
     <div className={`w-full min-h-screen relative ${styles.container}`}>
       {/* Animated background shapes */}
@@ -24,13 +25,13 @@ const HomePage = () => {
           <div className={styles.iconContainer}>
             <Compass className={styles.icon} size={48} />
           </div>
-          
-          <h1 className={`text-5xl md:text-7xl font-bold mb-6 ${styles.title}`}>
+
+          <h1 className="text-5xl md:text-7xl font-bold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-[#708090] to-[#FAFAD2]">
             Discover National Parks
           </h1>
-          
-          <p className={`text-xl md:text-2xl mb-12 ${styles.subtitle}`}>
-            Explore America's natural wonders and plan your next adventure
+
+          <p className="text-xl md:text-2xl mb-12 text-transparent bg-clip-text bg-gradient-to-r from-[#FAFAD2] to-[#708090]">
+            Plan Your Perfect National Park Getaway with AI-Powered Itineraries
           </p>
 
           <div className={styles.stats}>
@@ -47,17 +48,17 @@ const HomePage = () => {
               <span className={styles.statLabel}>Annual Visitors</span>
             </div>
           </div>
-          
+
           <div className={`flex flex-col sm:flex-row gap-4 justify-center ${styles.buttonContainer}`}>
             <button
-              onClick={() => navigate('/parks')}
+              onClick={() => navigate("/parks")}
               className={styles.primaryButton}
             >
               <span>Start Exploring</span>
               <ArrowRight className={styles.buttonIcon} size={20} />
             </button>
             <button
-              onClick={() => navigate('/itineraries')}
+              onClick={() => navigate("/itineraries")}
               className={styles.secondaryButton}
             >
               <Map size={20} />
@@ -66,6 +67,7 @@ const HomePage = () => {
           </div>
         </div>
       </main>
+      <Footer />
     </div>
   );
 };

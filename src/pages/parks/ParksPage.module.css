@@ -52,7 +52,7 @@
 }
 
 .gradientText {
-    font-size: 4.5rem;
+    font-size: 2.5rem; /* Default size for mobile */
     font-weight: bold;
     background: linear-gradient(to right, #4ade80, #22c55e);
     -webkit-background-clip: text;
@@ -115,7 +115,7 @@
         grid-template-columns: repeat(2, 1fr);
     }
     .gradientText {
-        font-size: 5rem;
+        font-size: 3rem; /* Medium size for tablets */
     }
 }
 
@@ -124,7 +124,7 @@
         grid-template-columns: repeat(3, 1fr);
     }
     .gradientText {
-        font-size: 6rem;
+        font-size: 3.5rem; /* Larger size for desktops */
     }
 }
 

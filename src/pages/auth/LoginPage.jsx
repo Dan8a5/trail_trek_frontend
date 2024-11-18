@@ -42,12 +42,12 @@ const LoginPage = () => {
       
       <div className="flex-1 flex items-center justify-center px-4">
         <div className="w-[400px]">
-          <h1 className="text-4xl font-bold text-white mb-4 text-center">
-            Trail Trek
-          </h1>
-          <h2 className="text-xl text-gray-400 mb-8 text-center">
-            Welcome Back
-          </h2>
+        <h1 className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#708090] to-[#FAFAD2] mb-4 text-center">
+  Trail Trek
+</h1>
+<h2 className="text-xl text-transparent bg-clip-text bg-gradient-to-r from-[#FAFAD2] to-[#708090] mb-8 text-center">
+  Welcome Back
+</h2>
 
           {error && (
             <div className="bg-red-500/10 border border-red-500 text-red-500 rounded-lg p-4 mb-6">

@@ -1,38 +1,22 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Search, MapPin, ArrowRight, Loader2 } from 'lucide-react';
-import { useTransition, animated } from '@react-spring/web';
+import { animated, useSpring } from '@react-spring/web';
 import Navbar from "../../components/layout/Navbar";
 import styles from './ParksPage.module.css';
 
-const slides = [
-  'photo-1544511916-0148ccdeb877',
-  'photo-1544572571-ab94fd872ce4',
-  'reserve/bnW1TuTV2YGcoh1HyWNQ_IMG_0207.JPG',
-  'photo-1540206395-68808572332f',
-];
+const AnimatedBackground = () => {
+  const [props, set] = useSpring(() => ({
+    from: { scale: 1.1 },
+    to: { scale: 1 },
+    config: { duration: 10000 },
+  }));
 
-const HeroBackground = () => {
-  const [index, set] = useState(0);
-  const transitions = useTransition(index, {
-    key: index,
-    from: { opacity: 0 },
-    enter: { opacity: 1 },
-    leave: { opacity: 0 },
-    config: { duration: 6000 },
-    onRest: (_a, _b, item) => {
-      if (index === item) {
-        set(state => (state + 1) % slides.length)
-      }
-    },
-    exitBeforeEnter: true,
-  });
-
-  return transitions((style, i) => (
+  return (
     <animated.div
       style={{
-        ...style,
-        backgroundImage: `url(https://images.unsplash.com/${slides[i]}?w=1920&q=80&auto=format&fit=crop)`,
+        ...props,
+        backgroundImage: `url(https://images.unsplash.com/photo-1544572571-ab94fd872ce4?w=1920&q=80&auto=format&fit=crop)`,
         position: 'absolute',
         top: 0,
         left: 0,
@@ -41,9 +25,10 @@ const HeroBackground = () => {
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         opacity: 0.5,
+        transform: props.scale.to(s => `scale(${s})`),
       }}
     />
-  ));
+  );
 };
 
 const ParksPage = () => {
@@ -51,6 +36,12 @@ const ParksPage = () => {
   const [parks, setParks] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [loading, setLoading] = useState(true);
+
+  const titleAnimation = useSpring({
+    from: { opacity: 0, transform: 'translateY(20px)' },
+    to: { opacity: 1, transform: 'translateY(0px)' },
+    config: { duration: 1000 },
+  });
 
   useEffect(() => {
     const fetchParks = async () => {
@@ -67,10 +58,12 @@ const ParksPage = () => {
     fetchParks();
   }, []);
 
-  const filteredParks = parks.filter(park =>
-    park.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    park.description.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const filteredParks = parks
+    .sort((a, b) => a.name.localeCompare(b.name))
+    .filter(park =>
+      park.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      park.description.toLowerCase().includes(searchQuery.toLowerCase())
+    );
 
   const handleViewDetails = (park) => {
     window.open(park.official_website, '_blank');
@@ -80,24 +73,17 @@ const ParksPage = () => {
     <div className={styles.container}>
       <Navbar />
       <div className={styles.hero}>
-        <div 
-          style={{
-            backgroundImage: `url(https://images.unsplash.com/photo-1544572571-ab94fd872ce4?w=1920&q=80&auto=format&fit=crop)`,
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            width: '100%',
-            height: '100%',
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            opacity: 0.5,
-          }}
-        />
+        <AnimatedBackground />
         <div className={styles.heroContent}>
-          <div className={styles.gradientText}>Discover National Parks</div>
-          <p className="text-xl text-white/80 mb-8 max-w-2xl text-center">
-            Explore America's natural wonders and plan your next adventure
-          </p>
+        <animated.h1 
+  style={titleAnimation}
+  className="text-4xl md:text-5xl lg:text-6xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#708090] to-[#FAFAD2] mb-6"
+>
+  National Parks Directory
+</animated.h1>
+<p className="text-xl text-transparent bg-clip-text bg-gradient-to-r from-[#FAFAD2] to-[#708090] mb-8 max-w-2xl text-center">
+  Browse all 63 national parks with descriptions and official links
+</p>
           <div className="flex justify-center">
             <button 
               onClick={() => navigate('/itineraries')}
