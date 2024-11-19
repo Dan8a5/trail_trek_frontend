@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Search, MapPin, ArrowRight, Loader2 } from 'lucide-react';
+import { Search, MapPin, ArrowRight, Loader2,  LogIn } from 'lucide-react';
 import { animated, useSpring } from '@react-spring/web';
 import Navbar from "../../components/layout/Navbar";
 import styles from './ParksPage.module.css';
