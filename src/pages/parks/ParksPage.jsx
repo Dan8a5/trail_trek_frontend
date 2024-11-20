@@ -1,9 +1,9 @@
-import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Search, MapPin, ArrowRight, Loader2,  LogIn } from 'lucide-react';
-import { animated, useSpring } from '@react-spring/web';
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { Search, MapPin, ArrowRight, Loader2, LogIn } from "lucide-react";
+import { animated, useSpring } from "@react-spring/web";
 import Navbar from "../../components/layout/Navbar";
-import styles from './ParksPage.module.css';
+import styles from "./ParksPage.module.css";
 
 const AnimatedBackground = () => {
   const [props, set] = useSpring(() => ({
@@ -17,15 +17,15 @@ const AnimatedBackground = () => {
       style={{
         ...props,
         backgroundImage: `url(https://images.unsplash.com/photo-1544572571-ab94fd872ce4?w=1920&q=80&auto=format&fit=crop)`,
-        position: 'absolute',
+        position: "absolute",
         top: 0,
         left: 0,
-        width: '100%',
-        height: '100%',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
+        width: "100%",
+        height: "100%",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
         opacity: 0.5,
-        transform: props.scale.to(s => `scale(${s})`),
+        transform: props.scale.to((s) => `scale(${s})`),
       }}
     />
   );
@@ -34,24 +34,24 @@ const AnimatedBackground = () => {
 const ParksPage = () => {
   const navigate = useNavigate();
   const [parks, setParks] = useState([]);
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
   const [loading, setLoading] = useState(true);
 
   const titleAnimation = useSpring({
-    from: { opacity: 0, transform: 'translateY(20px)' },
-    to: { opacity: 1, transform: 'translateY(0px)' },
+    from: { opacity: 0, transform: "translateY(20px)" },
+    to: { opacity: 1, transform: "translateY(0px)" },
     config: { duration: 1000 },
   });
 
   useEffect(() => {
     const fetchParks = async () => {
       try {
-        const response = await fetch('http://localhost:8000/parks');
+        const response = await fetch("http://localhost:8000/parks");
         const data = await response.json();
         setParks(data);
         setLoading(false);
       } catch (error) {
-        console.error('Error fetching parks:', error);
+        console.error("Error fetching parks:", error);
         setLoading(false);
       }
     };
@@ -60,13 +60,14 @@ const ParksPage = () => {
 
   const filteredParks = parks
     .sort((a, b) => a.name.localeCompare(b.name))
-    .filter(park =>
-      park.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      park.description.toLowerCase().includes(searchQuery.toLowerCase())
+    .filter(
+      (park) =>
+        park.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        park.description.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
   const handleViewDetails = (park) => {
-    window.open(park.official_website, '_blank');
+    window.open(park.official_website, "_blank");
   };
 
   return (
@@ -75,18 +76,18 @@ const ParksPage = () => {
       <div className={styles.hero}>
         <AnimatedBackground />
         <div className={styles.heroContent}>
-          <animated.h1 
+          <animated.h1
             style={titleAnimation}
             className="text-4xl md:text-5xl lg:text-6xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#708090] to-[#FAFAD2] mb-6 drop-shadow-[0_2px_2px_rgba(0,0,0,0.8)]"
           >
             National Parks Directory
           </animated.h1>
           <p className="text-xl text-transparent bg-clip-text bg-gradient-to-r from-[#FAFAD2] to-[#708090] mb-8 max-w-2xl text-center drop-shadow-[0_2px_2px_rgba(0,0,0,0.8)]">
-  Browse all 63 national parks with descriptions and official links
-</p>
+            Browse all 63 national parks with descriptions and official links
+          </p>
           <div className="flex justify-center">
-            <button 
-              onClick={() => navigate('/itineraries')}
+            <button
+              onClick={() => navigate("/itineraries")}
               className="group px-8 py-4 bg-white/10 hover:bg-white/20 text-white font-semibold rounded-lg transition-all transform hover:-translate-y-1 flex items-center gap-3"
             >
               <MapPin className="w-5 h-5 text-green-500 group-hover:scale-110 transition-transform" />
@@ -101,9 +102,9 @@ const ParksPage = () => {
           <div className="flex flex-col md:flex-row gap-4">
             <div className="flex-1 relative">
               <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" />
-              <input 
-                type="text" 
-                placeholder="Search national parks..." 
+              <input
+                type="text"
+                placeholder="Search national parks..."
                 className="w-full bg-[#121212] rounded-lg p-4 pl-12 text-white focus:outline-none focus:ring-2 focus:ring-green-500"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
@@ -119,12 +120,13 @@ const ParksPage = () => {
             <Loader2 className="w-8 h-8 text-green-500 animate-spin" />
           </div>
         ) : filteredParks.length > 0 ? (
-          filteredParks.map(park => (
+          filteredParks.map((park) => (
             <div key={park.id} className={styles.parkCard}>
               <div className="p-6 flex flex-col h-full">
                 <div className="flex justify-between items-start mb-3">
                   <h2 className="text-xl font-bold text-white flex items-center gap-2">
-                    <MapPin className="text-green-500" size={20} />
+                    <MapPin className="text-[#10B981]" size={20} />
+
                     {park.name}
                   </h2>
                   <span className="text-gray-400 text-sm">{park.state}</span>
@@ -137,20 +139,26 @@ const ParksPage = () => {
                 </div>
 
                 <div className="flex flex-wrap gap-2 mb-4">
-                  {park.activities?.slice(0, 3).map(activity => (
-                    <span key={activity} className="px-3 py-1 bg-green-500/20 rounded-full text-xs text-white">
+                  {park.activities?.slice(0, 3).map((activity) => (
+                    <span
+                      key={activity}
+                      className="px-3 py-1 bg-green-500/20 rounded-full text-xs text-white"
+                    >
                       {activity}
                     </span>
                   ))}
                 </div>
 
                 <div className="mt-auto">
-                  <button 
+                  <button
                     onClick={() => handleViewDetails(park)}
-                    className="w-full bg-green-500 hover:bg-green-600 text-black font-semibold py-3 rounded-lg transition-all flex items-center justify-center gap-2 group"
+                    className="w-full bg-[#10B981] hover:bg-[#0EA472] text-black font-semibold py-3 rounded-lg transition-all flex items-center justify-center gap-2 group"
                   >
                     Visit Official Website
-                    <ArrowRight className="group-hover:translate-x-1 transition-transform" size={20} />
+                    <ArrowRight
+                      className="group-hover:translate-x-1 transition-transform"
+                      size={20}
+                    />
                   </button>
                 </div>
               </div>

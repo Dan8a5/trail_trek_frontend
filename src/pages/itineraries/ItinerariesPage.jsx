@@ -366,7 +366,7 @@ const ItinerariesPage = () => {
                     <div className="p-2 border-t border-gray-700">
                       <button
                         onClick={() => setIsActivitiesOpen(false)}
-                        className="w-full px-4 py-2 bg-green-500 text-black rounded-lg hover:bg-green-600 transition-colors text-sm font-normal"
+                        className="w-full px-4 py-2 bg-[#10B981] hover:bg-[#0EA472] text-black rounded-lg transition-colors text-sm font-normal"
                       >
                         Done
                       </button>
@@ -424,9 +424,9 @@ const ItinerariesPage = () => {
 
             <button
               className={`w-full ${
-                loading ? "bg-green-700" : "bg-green-500 hover:bg-green-600"
+                loading ? "bg-green-700" : "bg-[#10B981] hover:bg-[#0EA472]"
               } 
-                text-black font-semibold py-4 rounded-full transition-colors text-sm`}
+   text-black font-semibold py-4 rounded-full transition-colors text-sm`}
               onClick={handleGenerateItinerary}
               disabled={loading}
             >

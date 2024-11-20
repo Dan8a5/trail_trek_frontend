@@ -179,11 +179,12 @@ const ProfilePage = () => {
                       />
                       <div className="flex gap-2">
                         <button
-                          className="flex-1 bg-green-500 hover:bg-green-600 text-black font-semibold py-2 rounded-lg"
+                          className="flex-1 bg-[#10B981] hover:bg-[#0EA472] text-black font-semibold py-2 rounded-lg"
                           onClick={() => saveEdits(itinerary.id)}
                         >
                           Save
                         </button>
+
                         <button
                           className="flex-1 bg-gray-500 hover:bg-gray-600 text-white font-semibold py-2 rounded-lg"
                           onClick={cancelEditing}
