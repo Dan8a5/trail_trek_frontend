@@ -1,8 +1,43 @@
-# React + Vite
+# Trail Trek 🏞️
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Trail Trek is a web application designed to help users explore all 63 US National Parks and plan their outdoor adventures effectively.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Browse all 63 National Parks with detailed information
+- Interactive park search functionality
+- User authentication system
+- Responsive design for mobile and desktop
+- Personalized itinerary creation
+- Park activity filtering
+
+## Technologies Used
+
+### Frontend
+- React
+- React Router DOM
+- Tailwind CSS
+- Lucide React 
+- React Spring 
+
+### Backend
+- FastAPI
+- SQLAlchemy
+- PostgreSQL
+- Python
+
+### Authentication
+- JWT (JSON Web Tokens)
+- Bcrypt for password hashing
+
+### APIs
+- National Park Service API
+- Custom FastAPI endpoints
+
+### Development Tools
+- Vite
+- Git/GitHub
+- npm
+
+
+
