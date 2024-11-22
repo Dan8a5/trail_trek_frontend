@@ -84,7 +84,7 @@ const ItinerariesPage = () => {
     const fetchParks = async () => {
       const token = localStorage.getItem("token");
       try {
-        const response = await fetch("http://127.0.0.1:8000/parks", {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/parks`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -128,7 +128,7 @@ const ItinerariesPage = () => {
         trip_details: tripDetails,
       };
 
-      const response = await fetch("http://127.0.0.1:8000/itineraries", {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/itineraries`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -164,7 +164,7 @@ const ItinerariesPage = () => {
     try {
       const token = localStorage.getItem("token");
       const response = await fetch(
-        "http://127.0.0.1:8000/itineraries/save_new_itinerary",
+        `${import.meta.env.VITE_API_URL}/itineraries/save_new_itinerary`,
         {
           method: "POST",
           headers: {
@@ -203,7 +203,7 @@ const ItinerariesPage = () => {
     try {
       const token = localStorage.getItem("token");
       const response = await fetch(
-        `http://127.0.0.1:8000/itineraries/${itineraryId}/pdf`,
+        `${import.meta.env.VITE_API_URL}/itineraries/${itineraryId}/pdf`,
         {
           method: "GET",
           headers: {

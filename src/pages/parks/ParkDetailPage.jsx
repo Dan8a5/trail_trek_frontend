@@ -13,7 +13,7 @@ const ParkDetailPage = () => {
   useEffect(() => {
     const fetchParkDetails = async () => {
       try {
-        const response = await fetch(`http://127.0.0.1:8000/parks/${parkCode}`);
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/parks/${parkCode}`);
         const data = await response.json();
         setPark(data);
         setLoading(false);
@@ -34,7 +34,7 @@ const ParkDetailPage = () => {
         end_date: new Date(preferences.end_date).toISOString().split('T')[0]
       };
 
-      const response = await fetch('http://127.0.0.1:8000/itineraries', {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/itineraries`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

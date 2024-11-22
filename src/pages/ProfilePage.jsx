@@ -15,7 +15,7 @@ const ProfilePage = () => {
     try {
       const token = localStorage.getItem("token");
       const response = await fetch(
-        `http://127.0.0.1:8000/itineraries/${itineraryId}/pdf`,
+        `${import.meta.env.VITE_API_URL}/itineraries/${itineraryId}/pdf`,
         {
           method: "GET",
           headers: {
@@ -44,7 +44,7 @@ const ProfilePage = () => {
 
     try {
       const response = await fetch(
-        `http://127.0.0.1:8000/itineraries/${itineraryId}`,
+        `${import.meta.env.VITE_API_URL}/itineraries/${itineraryId}`,
         {
           method: "DELETE",
           headers: {
@@ -81,7 +81,7 @@ const ProfilePage = () => {
 
     try {
       const response = await fetch(
-        `http://127.0.0.1:8000/itineraries/${itineraryId}`,
+        `${import.meta.env.VITE_API_URL}/itineraries/${itineraryId}`,
         {
           method: "PUT",
           headers: {

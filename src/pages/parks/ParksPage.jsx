@@ -48,7 +48,7 @@ const ParksPage = () => {
   useEffect(() => {
     const fetchParks = async () => {
       try {
-        const response = await fetch("http://localhost:8000/parks");
+        const response = await fetch(import.meta.env.VITE_API_URL);
         const data = await response.json();
         setParks(data);
         setLoading(false);
