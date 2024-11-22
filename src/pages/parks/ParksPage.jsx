@@ -121,7 +121,7 @@ const ParksPage = () => {
           <div className="col-span-full flex items-center justify-center p-8">
             <Loader2 className="w-8 h-8 text-green-500 animate-spin" />
           </div>
-        ) : filteredParks.length > 0 ? (
+        ) : parks.length > 0 ? (
           filteredParks.map((park) => (
             <div key={park.id} className={styles.parkCard}>
               <div className="p-6 flex flex-col h-full">
