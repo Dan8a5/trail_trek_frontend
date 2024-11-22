@@ -5,6 +5,8 @@ import { animated, useSpring } from "@react-spring/web";
 import Navbar from "../../components/layout/Navbar";
 import styles from "./ParksPage.module.css";
 
+
+
 const AnimatedBackground = () => {
   const [props, set] = useSpring(() => ({
     from: { scale: 1.1 },

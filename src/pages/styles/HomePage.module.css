@@ -143,7 +143,10 @@
 .statNumber {
   font-size: 2.5rem;
   font-weight: bold;
-  color: #10B981;
+  background: linear-gradient(to right, #708090, #FAFAD2);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 
 .statLabel {
@@ -151,6 +154,7 @@
   opacity: 0.9;
   font-size: 0.9rem;
 }
+
 
 /* Enhanced buttons */
 .primaryButton, .secondaryButton {
