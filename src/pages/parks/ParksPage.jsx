@@ -6,7 +6,7 @@ import Navbar from "../../components/layout/Navbar";
 import styles from "./ParksPage.module.css";
 
 
-
+const API_URL = import.meta.env.VITE_API_URL;
 const AnimatedBackground = () => {
   const [props, set] = useSpring(() => ({
     from: { scale: 1.1 },
@@ -48,7 +48,7 @@ const ParksPage = () => {
   useEffect(() => {
     const fetchParks = async () => {
       try {
-        const response = await fetch("http://localhost:8000/parks");
+        const response = await fetch("${API_URL}/parks");
         const data = await response.json();
         setParks(data);
         setLoading(false);

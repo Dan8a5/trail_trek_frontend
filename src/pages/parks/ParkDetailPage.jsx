@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import Navbar from '../../components/Navbar';
 import ItineraryForm from '../../components/itineraries/ItineraryForm';
 
+
 const ParkDetailPage = () => {
   const { parkCode } = useParams();
   const [park, setPark] = useState(null);
