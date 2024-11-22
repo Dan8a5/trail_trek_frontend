@@ -5,8 +5,6 @@ import { animated, useSpring } from "@react-spring/web";
 import Navbar from "../../components/layout/Navbar";
 import styles from "./ParksPage.module.css";
 
-
-
 const AnimatedBackground = () => {
   const [props, set] = useSpring(() => ({
     from: { scale: 1.1 },
@@ -48,9 +46,17 @@ const ParksPage = () => {
   useEffect(() => {
     const fetchParks = async () => {
       try {
-        const response = await fetch(import.meta.env.VITE_API_URL);
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/parks`);
         const data = await response.json();
-        setParks(data);
+        
+        const filteredParks = data
+          .sort((a, b) => a.name.localeCompare(b.name))
+          .filter(
+            (park) =>
+              park.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+              park.description.toLowerCase().includes(searchQuery.toLowerCase())
+          );
+        setParks(filteredParks);
         setLoading(false);
       } catch (error) {
         console.error("Error fetching parks:", error);
@@ -59,14 +65,6 @@ const ParksPage = () => {
     };
     fetchParks();
   }, []);
-
-  const filteredParks = parks
-    .sort((a, b) => a.name.localeCompare(b.name))
-    .filter(
-      (park) =>
-        park.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        park.description.toLowerCase().includes(searchQuery.toLowerCase())
-    );
 
   const handleViewDetails = (park) => {
     window.open(park.official_website, "_blank");
@@ -122,7 +120,7 @@ const ParksPage = () => {
             <Loader2 className="w-8 h-8 text-green-500 animate-spin" />
           </div>
         ) : parks.length > 0 ? (
-          filteredParks.map((park) => (
+          parks.map((park) => (
             <div key={park.id} className={styles.parkCard}>
               <div className="p-6 flex flex-col h-full">
                 <div className="flex justify-between items-start mb-3">
